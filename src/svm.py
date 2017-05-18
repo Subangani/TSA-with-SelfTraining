@@ -12,6 +12,7 @@ from sklearn import cross_validation
 import numpy as np
 from sklearn import preprocessing as pr
 from sklearn import metrics
+import csv
 
 positiveUnigram = "../dataset/positiveUnigram.txt"
 positiveBigram = "../dataset/positiveBigram.txt"
@@ -116,7 +117,7 @@ def trainModel(X,Y,knel,c): # relaxation parameter
     clf=svm.SVC(kernel=knel) # linear, poly, rbf, sigmoid, precomputed , see doc
     clf.fit(X,Y)
     print clf
-    plot(clf)
+
     return clf
 
 X,Y=loadMatrix(positiveProcessedfile,negativeProcessedfile,neutralProcessedfile,'2','-2','0')
@@ -146,4 +147,67 @@ def predict(tweet,model): # test a tweet against a built model
     z=z[0].tolist()
     return model.predict([z]).tolist()[0] # transform nympy array to list
 
-print predict("I am a  girl",MODEL)
+
+def predictFile(filename, svm_model):  # function to load test file in the csv format : sentiment,tweet
+    f = open(filename, 'r')
+    fo = open(filename + ".result", 'w')
+    fo.write('"auto label","tweet","anouar label","ziany label"')  # header
+    line = f.readline()
+    while line:
+        tweet = line[:-1]
+        nl = predict(tweet, svm_model)
+        fo.write(r'"' + str(nl) + r'","' + tweet + '"\n')
+        line = f.readline()
+
+    f.close()
+    fo.close()
+    print "Tweets are classified . The result is in " + filename + ".result"
+
+
+def loadTest(filename): # function to load test file in the csv format : sentiment,tweet
+    labels=[]
+    vectors=[]
+    f0 = open(filename, "r")
+    reader = csv.reader(f0)
+    for row in reader:
+        tweet = row[1]
+        s=row[0]
+        z=mapTweet(tweet)
+
+        z_scaled=scaler.transform(z)
+        z=normalizer.transform([z_scaled])
+        z=z[0].tolist()
+        vectors.append(z)
+        labels.append(s)
+
+#       print str(kneg)+"negative lines loaded"
+    f0.close()
+    return vectors,labels
+
+# write labelled  test dataset
+def writeTest(filename,model): # function to load test file in the csv format : sentiment,tweet
+    f = open(filename, "r")
+    reader = csv.reader(f)
+    fo=open(filename+".svm_result","w")
+    fo.write("old,tweet,new\n")
+    for line in reader:
+        tweet = line[1]
+        s = line[0]
+        nl=predict(tweet,model)
+        fo.write(r'"'+str(s)+r'","'+tweet+r'","'+str(nl)+r'"'+"\n")
+#        print str(kneg)+"negative lines loaded"
+    f.close()
+    fo.close()
+    print "labelled test dataset is stores in : "+str(filename)+".svm_result"
+
+
+
+
+# uncomment to classify test dataset
+print "Loading test data..."
+V, L = loadTest('../dataset/test.csv')
+# V,L=loadTest('../data/small_test_dataset.csv')
+
+# writ labelled test dataset
+writeTest('../dataset/test.csv', MODEL)
+
