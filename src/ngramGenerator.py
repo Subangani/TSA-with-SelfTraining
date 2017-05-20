@@ -129,8 +129,6 @@ def getCount(ngram,ngramfile):
     list = ngram_frequency[1:][:-1].replace("[", "").replace("]", "").replace("'", "").replace(" ","").split(',')
     for i in range(0,len(list)-1,2):
         if (list[i]==ngram):
-            print list[i]
-            print list[i+1]
             return list[i+1]
     return 0
 

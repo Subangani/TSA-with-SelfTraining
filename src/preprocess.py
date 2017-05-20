@@ -114,7 +114,7 @@ def preProcessTweet(tweet): # arg tweet, stopWords list and internet slangs dict
     stopWords = loadStopWordList()
     preprocessedtweet = removeStopWords(negatedTweets,stopWords)
     # remove punctuations
-    puctuationRemovedTweets = ' '.join(word.strip(string.punctuation) for word in preprocessedtweet.split())
+    puctuationRemovedTweets = ' '.join(word.strip(string.punctuation).replace(".","").replace("'","").replace(",","") for word in preprocessedtweet.split())
     # postag
     return puctuationRemovedTweets
 

@@ -1,5 +1,3 @@
-from mpmath import plot
-
 import lexicon
 import microbloggingFeature
 import ngramGenerator
@@ -8,10 +6,8 @@ import preprocess
 import postag
 
 from sklearn import svm
-from sklearn import cross_validation
 import numpy as np
 from sklearn import preprocessing as pr
-from sklearn import metrics
 import csv
 
 positiveUnigram = "../dataset/positiveUnigram.txt"
@@ -141,7 +137,7 @@ print "Training done !"
 
 def predict(tweet,model): # test a tweet against a built model
     z=mapTweet(tweet) # mapping
-    print z
+    print tweet
     z_scaled=scaler.transform(z)
     z=normalizer.transform([z_scaled])
     z=z[0].tolist()
@@ -158,7 +154,6 @@ def predictFile(filename, svm_model):  # function to load test file in the csv f
         nl = predict(tweet, svm_model)
         fo.write(r'"' + str(nl) + r'","' + tweet + '"\n')
         line = f.readline()
-
     f.close()
     fo.close()
     print "Tweets are classified . The result is in " + filename + ".result"
@@ -200,14 +195,41 @@ def writeTest(filename,model): # function to load test file in the csv format : 
     fo.close()
     print "labelled test dataset is stores in : "+str(filename)+".svm_result"
 
-
-
+def getAccuracyPrecision():
+    testedFile="../dataset/test.csv.svm_result"
+    f0=open(testedFile,"r")
+    line = f0.readline()
+    tweet=f0.readline()
+    TP=0
+    TN=0
+    TNeu=0
+    FP=0
+    FN=0
+    FNeu=0
+    while tweet:
+        tweetResult= tweet.replace('"','').split(",")
+        if ((tweetResult[0]=="positive") & (str(tweetResult[2])=="2.0\n")):
+            TP+=1
+        if ((tweetResult[0]=="negative") & (tweetResult[2]=="-2.0\n")):
+            TN+=1
+        if ((tweetResult[0]=="neutral") & (tweetResult[2]=="0.0\n")):
+            TNeu+=1
+        if (((tweetResult[0]=="negative") | (tweetResult[0]=="neutral")) & (tweetResult[2]=="2.0\n")):
+            FP+=1
+        if (((tweetResult[0]=="positive")| (tweetResult[0]=="neutral")) & (tweetResult[2]=="-2.0\n")):
+            FN+=1
+        if (((tweetResult[0]=="positive")| (tweetResult[0]=="negative")) & (tweetResult[2]=="0.0\n")):
+            FNeu+=1
+        tweet=f0.readline()
+    acc=(TP+TN+TNeu)/((TP+TN+TNeu+FP+FN+FNeu)*1.0)
+    precision=(TP/((FP+TP)*1.0))
+    return acc, precision
 
 # uncomment to classify test dataset
 print "Loading test data..."
-V, L = loadTest('../dataset/test.csv')
-# V,L=loadTest('../data/small_test_dataset.csv')
+#V, L = loadTest('../dataset/test.csv')
 
 # writ labelled test dataset
 writeTest('../dataset/test.csv', MODEL)
 
+print  getAccuracyPrecision()
