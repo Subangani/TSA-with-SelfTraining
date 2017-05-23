@@ -9,6 +9,8 @@ from sklearn import svm
 import numpy as np
 from sklearn import preprocessing as pr
 import csv
+import warnings
+warnings.filterwarnings('ignore')
 
 positiveUnigram = "../dataset/positiveUnigram.txt"
 positiveBigram = "../dataset/positiveBigram.txt"
@@ -88,7 +90,7 @@ def loadMatrix(posfilename, neufilename, negfilename, poslabel, neulabel, neglab
         except:
             None
         line = f.readline()
-
+    print str(kneu) + "neutral lines loaded : "
     f.close()
 
     f = open(negfilename, 'r')
@@ -105,12 +107,13 @@ def loadMatrix(posfilename, neufilename, negfilename, poslabel, neulabel, neglab
         line = f.readline()
 
     f.close()
+    print str(kneg) + "negative lines loaded : "
     print "Loading done."
     return vectors, labels
 
 # map tweet into a vector
 def trainModel(X,Y,knel,c): # relaxation parameter
-    clf=svm.SVC(kernel=knel) # linear, poly, rbf, sigmoid, precomputed , see doc
+    clf=svm.SVC(kernel=knel, C=c) # linear, poly, rbf, sigmoid, precomputed , see doc
     clf.fit(X,Y)
     print clf
 
@@ -129,7 +132,7 @@ normalizer = pr.Normalizer().fit(X_scaled)  # as before normalizer.transform([[-
 X=X_normalized
 X=X.tolist()
 KERNEL_FUNCTION='linear'
-C_PARAMETER=0.6
+C_PARAMETER=1.0
 
 print "Training model with optimized parameters"
 MODEL=trainModel(X,Y,KERNEL_FUNCTION,C_PARAMETER)
@@ -137,7 +140,6 @@ print "Training done !"
 
 def predict(tweet,model): # test a tweet against a built model
     z=mapTweet(tweet) # mapping
-    print tweet
     z_scaled=scaler.transform(z)
     z=normalizer.transform([z_scaled])
     z=z[0].tolist()
@@ -198,7 +200,7 @@ def writeTest(filename,model): # function to load test file in the csv format : 
 def getAccuracyPrecision():
     testedFile="../dataset/test.csv.svm_result"
     f0=open(testedFile,"r")
-    line = f0.readline()
+    line = f0.readline() #pass first line
     tweet=f0.readline()
     TP=0
     TN=0
@@ -223,6 +225,7 @@ def getAccuracyPrecision():
         tweet=f0.readline()
     acc=(TP+TN+TNeu)/((TP+TN+TNeu+FP+FN+FNeu)*1.0)
     precision=(TP/((FP+TP)*1.0))
+    print acc,precision
     return acc, precision
 
 # uncomment to classify test dataset
@@ -232,4 +235,5 @@ print "Loading test data..."
 # writ labelled test dataset
 writeTest('../dataset/test.csv', MODEL)
 
-print  getAccuracyPrecision()
+accuracy,precision = getAccuracyPrecision()
+
