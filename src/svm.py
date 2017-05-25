@@ -176,8 +176,6 @@ def loadTest(filename): # function to load test file in the csv format : sentime
         z=z[0].tolist()
         vectors.append(z)
         labels.append(s)
-
-#       print str(kneg)+"negative lines loaded"
     f0.close()
     return vectors,labels
 
@@ -225,15 +223,13 @@ def getAccuracyPrecision():
         tweet=f0.readline()
     acc=(TP+TN+TNeu)/((TP+TN+TNeu+FP+FN+FNeu)*1.0)
     precision=(TP/((FP+TP)*1.0))
+    recall=TP/(TP+FN)
     print acc,precision
     return acc, precision
 
 # uncomment to classify test dataset
 print "Loading test data..."
 #V, L = loadTest('../dataset/test.csv')
-
-# writ labelled test dataset
 writeTest('../dataset/test.csv', MODEL)
-
+# writ labelled test dataset
 accuracy,precision = getAccuracyPrecision()
-

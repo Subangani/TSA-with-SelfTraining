@@ -1,4 +1,6 @@
 import svm
+import preprocess
+
 import csv
 
 import numpy as np
@@ -6,14 +8,12 @@ from sklearn import preprocessing as pr
 import warnings
 warnings.filterwarnings('ignore')
 
-unlabeledFile="../dataset/ttt.txt"
+unlabeledFile="../dataset/unlabeled.txt"
 positiveProcessedfile="../dataset/positiveProcessed.txt"
 negativeProcessedfile="../dataset/negativeProcessed.txt"
 neutralProcessedfile = "../dataset/neutralProcessed.txt"
 accuracy=svm.accuracy
 print accuracy
-
-
 
 def addToLabeledData():
     model = svm.MODEL
@@ -22,12 +22,9 @@ def addToLabeledData():
         f1 = open(positiveProcessedfile, "a")
         f2 = open(negativeProcessedfile, "a")
         f3 = open(neutralProcessedfile, 'a')
-        f4 = open(positiveProcessedfile, "r")
-        f5 = open(negativeProcessedfile, "r")
-        f6 = open(neutralProcessedfile, "r")
 
         print i
-        for j in range(i,i+10,1):
+        for j in range(i,i+50,1):
             print j
             tweet = f0.readline()
             sentiment=svm.predict(tweet,model)
@@ -41,6 +38,9 @@ def addToLabeledData():
         f1.close()
         f2.close()
         f3.close()
+        preprocess.ngramgeneration(positiveProcessedfile, svm.positiveUnigram, svm.positiveBigram, svm.positiveTrigram)
+        preprocess.ngramgeneration(negativeProcessedfile, svm.negativeUnigram, svm.negativeBigram, svm.negativeTrigram)
+        preprocess.ngramgeneration(neutralProcessedfile, svm.neutralUnigram, svm.neutralBigram, svm.neutralTrigram)
         X, Y = svm.loadMatrix(positiveProcessedfile, neutralProcessedfile,negativeProcessedfile, '2', '-2', '0')
         X_scaled = pr.scale(np.array(X))
 
@@ -58,25 +58,7 @@ def addToLabeledData():
         acc,pre=svm.getAccuracyPrecision()
         print "*********"
         print acc,pre,accuracy
-        #if (acc<accuracy):
-            # if (sentiment == 2.0):
-            #     lines = f4.readlines()
-            #     lines = lines[:-1]
-            #     cWriter = csv.writer(f4, delimiter=',')
-            #     for line in lines:
-            #         cWriter.writerow(line)
-            # if (sentiment == 0.0):
-            #     lines = f6.readlines()
-            #     lines = lines[:-1]
-            #     cWriter = csv.writer(f6, delimiter=',')
-            #     for line in lines:
-            #         cWriter.writerow(line)
-            # if (sentiment == -2.0):
-            #     lines = f5.readlines()
-            #     lines = lines[:-1]
-            #     cWriter = csv.writer(f5, delimiter=',')
-            #     for line in lines:
-            #         cWriter.writerow(line)
+
 addToLabeledData()
 
 
