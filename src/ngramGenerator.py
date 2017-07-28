@@ -47,11 +47,10 @@ def ngram(file,gram):
                 postag_dict=dict(postags,gram)
                 postag_freq_list,is_success=dictUpdate(postag_freq_list,postag_dict)
             except IndexError:
-                print line
                 print "Error"
     is_success=True
-    return freq_list,postag_freq_list
 
+    return freq_list,postag_freq_list
 
 def get_count(gram,pol):
     """

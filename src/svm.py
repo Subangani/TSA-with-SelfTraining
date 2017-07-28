@@ -5,6 +5,7 @@ import csv
 import numpy as np
 from sklearn import preprocessing as pr
 from sklearn import svm
+import tune
 
 positiveFile="../dataset/posTrain.csv"
 negativeFile="../dataset/negTrain.csv"
@@ -34,15 +35,12 @@ def svm_Model():
 
     X = X_normalized
     X = X.tolist()
-    KERNEL_FUNCTION = 'linear'
-    C_PARAMETER = 0.01
+
+    KERNEL_FUNCTION,C_PARAMETER= tune.get_Kernel_Cparameter(X, Y)
 
     print "Training model with optimized parameters"
     MODEL = train_SVM_model(X, Y, KERNEL_FUNCTION, C_PARAMETER)
     print "Training done !"
-
-    print "KERNEL_FUNCTION"+ str(KERNEL_FUNCTION)
-    print "C_PARAMETER"+str(C_PARAMETER)
 
 #predict a tweet using the model
 def predict(tweet,model): # test a tweet against a built model

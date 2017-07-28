@@ -52,7 +52,7 @@ def mapTweet(tweet):
     vector = []
     preprocessed_tweet=preprocess.preProcessTweet(tweet)
     vector.append(lexicon.getLexiconScore(preprocessed_tweet,posLexicon,negLexicon))
-    #vector.append(microbloggingFeature.emoticonScore(preprocessed_tweet,emoticonDict))
+    #vector.append(microbloggingFeature.emoticonScore(tweet,emoticonDict))
     vector.append(writingStyle.uppercasedWordsInTweet(tweet))
     vector.append(writingStyle.exclamationCount(tweet))
     vector.append(writingStyle.questionMarkCount(tweet))
