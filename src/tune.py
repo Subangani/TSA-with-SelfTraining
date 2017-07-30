@@ -8,8 +8,8 @@ def get_Kernel_Cparameter(X,Y):
     # 5 fold cross validation
     x=np.array(X)
     y=np.array(Y)
-    KERNEL_FUNCTIONS=['linear','rbf']
-    C=[0.001,0.005,0.01,0.05,0.1,0.5,1.0]
+    KERNEL_FUNCTIONS=['rbf']
+    C=[0.05,0.1,0.5,1.0]
     ACC=0.0
     PRE=0.0
     iter=0

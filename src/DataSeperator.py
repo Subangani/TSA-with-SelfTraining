@@ -32,6 +32,4 @@ def seperate():
             f5.write(str(row)+"\n")
         else:
             f8.write(str(row)+"\n")
-
-
 seperate()

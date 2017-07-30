@@ -14,8 +14,8 @@ positiveTuneFile="../dataset/posSelf.csv"
 negativeTuneFile="../dataset/negSelf.csv"
 neutralTuneFile="../dataset/neuSelf.csv"
 MODEL=null
-scaler=null
-normalizer=null
+model_scaler=null
+model_normalizer=null
 
 
 # train the model
@@ -25,47 +25,46 @@ def train_SVM_model(X,Y,knel,c): # relaxation parameter
     return clf
 
 def svm_Model():
-    global scaler, normalizer,MODEL
-    X, Y = generateVector.loadMatrix(positiveFile, neutralFile, negativeFile, '2', '0', '-2')
+    global model_scaler, model_normalizer,MODEL
+    X_model, Y_model = generateVector.loadMatrix(positiveFile, neutralFile, negativeFile, '2', '0', '-2')
+
+    # features standardization
+    X_model_scaled = pr.scale(np.array(X_model))
+    model_scaler = pr.StandardScaler().fit(X_model)  # to use later for testing data scaler.transform(X)
+
+    # features Normalization
+    X_model_normalized = pr.normalize(X_model_scaled, norm='l2')  # l2 norm
+    model_normalizer = pr.Normalizer().fit(X_model_scaled)  # as before normalizer.transform([[-1.,  1., 0.]]) for test
+
+    X_model = X_model_normalized
+    X_model = X_model.tolist()
+
+
+    X, Y= generateVector.loadMatrix(positiveTuneFile, neutralTuneFile, negativeTuneFile, '2', '0', '-2')
 
     # features standardization
     X_scaled = pr.scale(np.array(X))
-    scaler = pr.StandardScaler().fit(X)  # to use later for testing data scaler.transform(X)
 
     # features Normalization
     X_normalized = pr.normalize(X_scaled, norm='l2')  # l2 norm
-    normalizer = pr.Normalizer().fit(X_scaled)  # as before normalizer.transform([[-1.,  1., 0.]]) for test
 
-    X = X_normalized
+    X= X_normalized
     X = X.tolist()
-
-    KERNEL_FUNCTION,C_PARAMETER= tune.get_Kernel_Cparameter(X, Y)
-
-    X_model, Y_model = generateVector.loadMatrix(positiveTuneFile, neutralTuneFile, negativeTuneFile, '2', '0', '-2')
-
-    # features standardization
-    X_scaled = pr.scale(np.array(X_model))
-    scaler = pr.StandardScaler().fit(X_model)  # to use later for testing data scaler.transform(X)
-
-    # features Normalization
-    X_normalized = pr.normalize(X_scaled, norm='l2')  # l2 norm
-    normalizer = pr.Normalizer().fit(X_scaled)  # as before normalizer.transform([[-1.,  1., 0.]]) for test
-
-    X_model = X_normalized
-    X_model = X_model.tolist()
-
+    KERNEL_FUNCTION, C_PARAMETER = tune.get_Kernel_Cparameter(X, Y)
     print "Training model with optimized parameters"
-    MODEL = train_SVM_model(X_model, Y_model, KERNEL_FUNCTION, C_PARAMETER)
+    MODEL = train_SVM_model(X_model, Y_model,KERNEL_FUNCTION, C_PARAMETER)
     print "Training done !"
+    return MODEL
 
 #predict a tweet using the model
 def predict(tweet,model): # test a tweet against a built model
-    global scaler, normalizer
+    global model_scaler, model_normalizer
     z = generateVector.mapTweet(tweet)  # mapping
-    z_scaled = scaler.transform(z)
-    z = normalizer.transform([z_scaled])
+    z_scaled = model_scaler.transform(z)
+    z = model_normalizer.transform([z_scaled])
     z = z[0].tolist()
-    return model.predict([z]).tolist()[0]  # transform nympy array to list
+    prediction = model.predict([z]).tolist()[0]
+    return  prediction # transform nympy array to list
 
 # write labelled  test dataset
 def writeTest(filename,model): # function to load test file in the csv format : sentiment,tweet
@@ -157,5 +156,7 @@ def getAccuracyPrecision():
 
 
 
-svm_Model()
+#svm_Model()
+print predict("Im a bad ", svm_Model())
 test(MODEL)
+

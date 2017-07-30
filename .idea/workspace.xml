@@ -2,18 +2,11 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="286d990c-1840-41a5-9274-3f99a108859c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dataset/negSelf.csv" afterPath="$PROJECT_DIR$/dataset/negSelf.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dataset/neuSelf.csv" afterPath="$PROJECT_DIR$/dataset/neuSelf.csv" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dataset/posSelf.csv" afterPath="$PROJECT_DIR$/dataset/posSelf.csv" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/dataset/test.csv.svm_result" afterPath="$PROJECT_DIR$/dataset/test.csv.svm_result" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/DataSeperator.py" afterPath="$PROJECT_DIR$/src/DataSeperator.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/XGBoost.py" afterPath="$PROJECT_DIR$/src/XGBoost.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/generateVector.py" afterPath="$PROJECT_DIR$/src/generateVector.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/microbloggingFeature.py" afterPath="$PROJECT_DIR$/src/microbloggingFeature.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/ngramGenerator.py" afterPath="$PROJECT_DIR$/src/ngramGenerator.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/postag.py" afterPath="$PROJECT_DIR$/src/postag.py" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/svm.py" afterPath="$PROJECT_DIR$/src/svm.py" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/tune.py" afterPath="$PROJECT_DIR$/src/tune.py" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="TRACKING_ENABLED" value="true" />
@@ -25,16 +18,6 @@
   <component name="ExecutionTargetManager" SELECTED_TARGET="default_target" />
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="postag.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/postag.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="36">
-              <caret line="2" column="18" lean-forward="false" selection-start-line="2" selection-start-column="4" selection-end-line="2" selection-end-column="18" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file leaf-file-name="ngramGenerator.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/ngramGenerator.py">
           <provider selected="true" editor-type-id="text-editor">
@@ -50,8 +33,8 @@
       <file leaf-file-name="XGBoost.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/XGBoost.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1566">
-              <caret line="92" column="0" lean-forward="false" selection-start-line="92" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
+            <state relative-caret-position="36">
+              <caret line="74" column="0" lean-forward="true" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
               <folding>
                 <element signature="e#1#22#0" expanded="true" />
               </folding>
@@ -72,28 +55,30 @@
       <file leaf-file-name="DataSeperator.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/DataSeperator.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="630">
-              <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
+            <state relative-caret-position="593">
+              <caret line="33" column="35" lean-forward="false" selection-start-line="33" selection-start-column="35" selection-end-line="33" selection-end-column="35" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="tune.py" pinned="false" current-in-tab="false">
+      <file leaf-file-name="tune.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/tune.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="18">
-              <caret line="1" column="23" lean-forward="false" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="23" />
-              <folding />
+            <state relative-caret-position="3">
+              <caret line="14" column="10" lean-forward="true" selection-start-line="14" selection-start-column="10" selection-end-line="14" selection-end-column="10" />
+              <folding>
+                <element signature="e#0#31#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="svm.py" pinned="false" current-in-tab="true">
+      <file leaf-file-name="svm.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/svm.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="197">
-              <caret line="55" column="0" lean-forward="true" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+            <state relative-caret-position="1893">
+              <caret line="159" column="23" lean-forward="false" selection-start-line="159" selection-start-column="23" selection-end-line="159" selection-end-column="23" />
               <folding>
                 <element signature="e#1#34#0" expanded="true" />
               </folding>
@@ -104,21 +89,9 @@
       <file leaf-file-name="test.csv.svm_result" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dataset/test.csv.svm_result">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="0">
-              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+            <state relative-caret-position="18540">
+              <caret line="1030" column="84" lean-forward="false" selection-start-line="1030" selection-start-column="84" selection-end-line="1030" selection-end-column="84" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="microbloggingFeature.py" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/microbloggingFeature.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1620">
-              <caret line="91" column="39" lean-forward="false" selection-start-line="91" selection-start-column="39" selection-end-line="91" selection-end-column="39" />
-              <folding>
-                <element signature="e#0#31#0" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -126,7 +99,7 @@
       <file leaf-file-name="generateVector.py" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/generateVector.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="972">
+            <state relative-caret-position="-915">
               <caret line="62" column="17" lean-forward="true" selection-start-line="62" selection-start-column="17" selection-end-line="62" selection-end-column="17" />
               <folding>
                 <element signature="e#1#34#0" expanded="true" />
@@ -150,15 +123,15 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/tune.py" />
         <option value="$PROJECT_DIR$/src/microbloggingFeature.py" />
         <option value="$PROJECT_DIR$/src/postag.py" />
         <option value="$PROJECT_DIR$/src/ngramGenerator.py" />
-        <option value="$PROJECT_DIR$/src/svm.py" />
-        <option value="$PROJECT_DIR$/src/DataSeperator.py" />
         <option value="$PROJECT_DIR$/src/XGBoost.py" />
         <option value="$PROJECT_DIR$/dataset/test.csv.xgboost_result" />
         <option value="$PROJECT_DIR$/src/generateVector.py" />
+        <option value="$PROJECT_DIR$/src/DataSeperator.py" />
+        <option value="$PROJECT_DIR$/src/tune.py" />
+        <option value="$PROJECT_DIR$/src/svm.py" />
       </list>
     </option>
   </component>
@@ -408,11 +381,12 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="58" y="-11" width="1309" height="780" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.25773194" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3003096" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.3003096" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Python Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -485,7 +459,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
           <caret line="1" column="23" lean-forward="false" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="23" />
-          <folding />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -502,7 +478,7 @@
         <state relative-caret-position="1620">
           <caret line="91" column="39" lean-forward="false" selection-start-line="91" selection-start-column="39" selection-end-line="91" selection-end-column="39" />
           <folding>
-            <element signature="e#0#31#0" expanded="true" />
+            <element signature="e#0#31#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -549,7 +525,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="18">
           <caret line="1" column="23" lean-forward="false" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="23" />
-          <folding />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -575,7 +553,7 @@
         <state relative-caret-position="954">
           <caret line="53" column="0" lean-forward="true" selection-start-line="53" selection-start-column="0" selection-end-line="53" selection-end-column="0" />
           <folding>
-            <element signature="e#0#31#0" expanded="true" />
+            <element signature="e#0#31#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -584,6 +562,9 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#9#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -607,17 +588,13 @@
         </state>
       </provider>
     </entry>
-    <entry file="file:///usr/local/lib/python2.7/dist-packages/sklearn/cross_validation.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1864">
-          <caret line="1467" column="4" lean-forward="false" selection-start-line="1467" selection-start-column="4" selection-end-line="1467" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/preprocess.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="e#0#9#0" expanded="false" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -633,7 +610,7 @@
         <state relative-caret-position="1620">
           <caret line="91" column="39" lean-forward="false" selection-start-line="91" selection-start-column="39" selection-end-line="91" selection-end-column="39" />
           <folding>
-            <element signature="e#0#31#0" expanded="true" />
+            <element signature="e#0#31#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -656,22 +633,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dataset/test.csv.svm_result">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/DataSeperator.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="630">
-          <caret line="35" column="0" lean-forward="true" selection-start-line="35" selection-start-column="0" selection-end-line="35" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dataset/test.csv.xgboost_result">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -682,25 +643,25 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/XGBoost.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1566">
-          <caret line="92" column="0" lean-forward="false" selection-start-line="92" selection-start-column="0" selection-end-line="92" selection-end-column="0" />
+        <state relative-caret-position="36">
+          <caret line="74" column="0" lean-forward="true" selection-start-line="74" selection-start-column="0" selection-end-line="74" selection-end-column="0" />
           <folding>
             <element signature="e#1#22#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/tune.py">
+    <entry file="file://$PROJECT_DIR$/dataset/test.csv.svm_result">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="18">
-          <caret line="1" column="23" lean-forward="false" selection-start-line="1" selection-start-column="23" selection-end-line="1" selection-end-column="23" />
+        <state relative-caret-position="18540">
+          <caret line="1030" column="84" lean-forward="false" selection-start-line="1030" selection-start-column="84" selection-end-line="1030" selection-end-column="84" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/generateVector.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="972">
+        <state relative-caret-position="-915">
           <caret line="62" column="17" lean-forward="true" selection-start-line="62" selection-start-column="17" selection-end-line="62" selection-end-column="17" />
           <folding>
             <element signature="e#1#34#0" expanded="true" />
@@ -708,12 +669,46 @@
         </state>
       </provider>
     </entry>
+    <entry file="file:///usr/local/lib/python2.7/dist-packages/sklearn/metrics/scorer.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="356">
+          <caret line="221" column="4" lean-forward="false" selection-start-line="221" selection-start-column="4" selection-end-line="221" selection-end-column="4" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file:///usr/local/lib/python2.7/dist-packages/sklearn/cross_validation.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="131">
+          <caret line="1467" column="19" lean-forward="true" selection-start-line="1467" selection-start-column="4" selection-end-line="1467" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/DataSeperator.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="593">
+          <caret line="33" column="35" lean-forward="false" selection-start-line="33" selection-start-column="35" selection-end-line="33" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/svm.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="197">
-          <caret line="55" column="0" lean-forward="true" selection-start-line="55" selection-start-column="0" selection-end-line="55" selection-end-column="0" />
+        <state relative-caret-position="1893">
+          <caret line="159" column="23" lean-forward="false" selection-start-line="159" selection-start-column="23" selection-end-line="159" selection-end-column="23" />
           <folding>
             <element signature="e#1#34#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/tune.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3">
+          <caret line="14" column="10" lean-forward="true" selection-start-line="14" selection-start-column="10" selection-end-line="14" selection-end-column="10" />
+          <folding>
+            <element signature="e#0#31#0" expanded="true" />
           </folding>
         </state>
       </provider>
