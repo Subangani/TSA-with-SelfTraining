@@ -36,7 +36,7 @@ def generateTestVector(testFileName):
     return np.asarray(testVector),np.asarray(testLabel)
 
 def test_XGBoost():
-    global XGBoost_MODEL,predictions
+    global XGBoost_MODEL
     testFileName = "../dataset/test.csv"
     testvec,testLabel=generateTestVector(testFileName)
     y_pred = XGBoost_MODEL.predict(testvec)
@@ -50,8 +50,6 @@ def test_XGBoost():
             testLabelInt[i] = 2.0
         elif (testLabel[i] == "negative"):
             testLabelInt[i] = -2.0
-
-   # print y_pred
     predictions = [round(value) for value in y_pred]
     testLabelInt = map(int, testLabelInt)
     # evaluate predictions
@@ -62,7 +60,7 @@ def test_XGBoost():
 def writeTest(filename,predictions):
     f = open(filename, "r")
     reader = csv.reader(f)
-    fo = open(filename + ".svm_result", "w")
+    fo = open(filename + ".xgboost_result", "w")
     fo.write("old,tweet,new\n")
     i=0
     for line in reader:
@@ -73,11 +71,11 @@ def writeTest(filename,predictions):
         i+=1
     f.close()
     fo.close()
-    print "labelled test dataset is stores in : " + str(filename) + ".svm_result"
+    print "labelled test dataset is stores in : " + str(filename) + ".xgboost_result"
 
 def getAccuracyPrecision():
     try:
-        testedFile="../dataset/test.csv.svm_result"
+        testedFile="../dataset/test.csv.xgboost_result"
         f0=open(testedFile,"r")
         line = f0.readline() #pass first line
         TP=0

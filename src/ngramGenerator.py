@@ -43,7 +43,7 @@ def ngram(file,gram):
                 words=line[0].split()
                 word_dict=dict(words,gram)
                 freq_list,is_success=dictUpdate(freq_list,word_dict)
-                postags=postag.posTagString(line[0]).split()
+                postags=postag.pos_tag_string(line[0]).split()
                 postag_dict=dict(postags,gram)
                 postag_freq_list,is_success=dictUpdate(postag_freq_list,postag_dict)
             except IndexError:

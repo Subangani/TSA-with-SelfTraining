@@ -1,9 +1,9 @@
 
 import csv
 def seperate():
-    pos="../dataset/positive.csv"
-    neg="../dataset/negative.csv"
-    neu="../dataset/neutral.csv"
+    pos="../dataset/full_data/positive.csv"
+    neg="../dataset/full_data/negative.csv"
+    neu="../dataset/full_data/neutral.csv"
 
     posTrain = "../dataset/posTrain.csv"
     negTrain = "../dataset/negTrain.csv"
@@ -27,12 +27,11 @@ def seperate():
     reader = csv.reader(f2)
     x0 = 0
     for row in reader:
-        twwet=row[2]
         x0+=1
         if(x0%2):
             f5.write(str(row)+"\n")
         else:
-            f8.write(str(twwet)+"\n")
+            f8.write(str(row)+"\n")
 
 
 seperate()

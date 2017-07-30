@@ -4,7 +4,7 @@ import lexicon
 import ngramGenerator
 import writingStyle
 import preprocess
-#import microbloggingFeature
+import microbloggingFeature
 
 import csv
 import warnings
@@ -12,7 +12,6 @@ warnings.filterwarnings('ignore')
 
 posLexicon="../resources/positive.txt"
 negLexicon="../resources/negative.txt"
-#emoticonDict=microbloggingFeature.createEmoticonDictionary("../resources/emoticon.txt")
 
 positiveProcessedfile="../dataset/positiveProcessed.txt"
 negativeProcessedfile="../dataset/negativeProcessed.txt"
@@ -21,6 +20,11 @@ neutralProcessedfile="../dataset/neutralProcessed.txt"
 positiveFile="../dataset/posTrain.csv"
 negativeFile="../dataset/negTrain.csv"
 neutralFile="../dataset/neuTrain.csv"
+
+emoticon_file = "../resources/emoticon.txt"
+emoticon_dict = microbloggingFeature.create_emoticon_dictionary(emoticon_file)
+unicode_emoticon_file = "../resources/emoticon.csv"
+unicode_emoticon_dict = microbloggingFeature.create_unicode_emoticon_dictionary(unicode_emoticon_file)
 
 positiveUnigramList=null
 negativeUnigramList=null
@@ -51,15 +55,18 @@ ngramGeneratora()
 def mapTweet(tweet):
     vector = []
     preprocessed_tweet=preprocess.preProcessTweet(tweet)
-    vector.append(lexicon.getLexiconScore(preprocessed_tweet,posLexicon,negLexicon))
-    #vector.append(microbloggingFeature.emoticonScore(tweet,emoticonDict))
+    vector.append(lexicon.getLexiconScore(tweet,posLexicon,negLexicon))
+    vector.append(microbloggingFeature.emoticon_score(tweet,emoticon_dict))
+    vector.append(microbloggingFeature.unicode_emoticon_score(tweet,unicode_emoticon_dict))
     vector.append(writingStyle.uppercasedWordsInTweet(tweet))
     vector.append(writingStyle.exclamationCount(tweet))
     vector.append(writingStyle.questionMarkCount(tweet))
     vector.extend(ngramGenerator.score(preprocessed_tweet,positiveUnigramList[0],negativeUnigramList[0],neutralUnigramList[0],1))
     vector.extend(ngramGenerator.score(preprocessed_tweet,positiveUnigramList[0],negativeUnigramList[0],neutralUnigramList[0],2))
-    vector.extend(ngramGenerator.score(preprocessed_tweet,positiveUnigramList[0],negativeUnigramList[0],neutralUnigramList[0],3))
+    #vector.extend(ngramGenerator.score(preprocessed_tweet,positiveUnigramList[0],negativeUnigramList[0],neutralUnigramList[0],3))
     vector.extend(ngramGenerator.score(preprocessed_tweet,positiveUnigramList[1],negativeUnigramList[1],neutralUnigramList[1],1))
+    #vector.extend(ngramGenerator.score(preprocessed_tweet,positiveUnigramList[1],negativeUnigramList[1],neutralUnigramList[1],2))
+    #vector.extend(ngramGenerator.score(preprocessed_tweet,positiveUnigramList[1],negativeUnigramList[1],neutralUnigramList[1],3))
     return vector
 
 def loadMatrix(posfilename, neufilename, negfilename, poslabel, neulabel, neglabel):

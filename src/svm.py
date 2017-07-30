@@ -40,22 +40,22 @@ def svm_Model():
     X = X.tolist()
 
     KERNEL_FUNCTION,C_PARAMETER= tune.get_Kernel_Cparameter(X, Y)
-    #
-    # X_model, Y_model = generateVector.loadMatrix(positiveTuneFile, neutralTuneFile, negativeTuneFile, '2', '0', '-2')
-    #
-    # # features standardization
-    # X_scaled = pr.scale(np.array(X_model))
-    # scaler = pr.StandardScaler().fit(X_model)  # to use later for testing data scaler.transform(X)
-    #
-    # # features Normalization
-    # X_normalized = pr.normalize(X_scaled, norm='l2')  # l2 norm
-    # normalizer = pr.Normalizer().fit(X_scaled)  # as before normalizer.transform([[-1.,  1., 0.]]) for test
-    #
-    # X_model = X_normalized
-    # X_model = X_model.tolist()
+
+    X_model, Y_model = generateVector.loadMatrix(positiveTuneFile, neutralTuneFile, negativeTuneFile, '2', '0', '-2')
+
+    # features standardization
+    X_scaled = pr.scale(np.array(X_model))
+    scaler = pr.StandardScaler().fit(X_model)  # to use later for testing data scaler.transform(X)
+
+    # features Normalization
+    X_normalized = pr.normalize(X_scaled, norm='l2')  # l2 norm
+    normalizer = pr.Normalizer().fit(X_scaled)  # as before normalizer.transform([[-1.,  1., 0.]]) for test
+
+    X_model = X_normalized
+    X_model = X_model.tolist()
 
     print "Training model with optimized parameters"
-    MODEL = train_SVM_model(X, Y, KERNEL_FUNCTION, C_PARAMETER)
+    MODEL = train_SVM_model(X_model, Y_model, KERNEL_FUNCTION, C_PARAMETER)
     print "Training done !"
 
 #predict a tweet using the model
