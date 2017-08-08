@@ -1,26 +1,20 @@
-
 from docutils.parsers import null
 import generateVector
 import csv
-import numpy as np
 from sklearn import preprocessing as pr
 from sklearn import svm
-import tune
 
-positiveFile="../dataset/posTrain.csv"
-negativeFile="../dataset/negTrain.csv"
-neutralFile="../dataset/neuTrain.csv"
-positiveTuneFile="../dataset/posSelf.csv"
-negativeTuneFile="../dataset/negSelf.csv"
-neutralTuneFile="../dataset/neuSelf.csv"
+positiveFile="../dataset/full_data/posTrain.csv"
+negativeFile="../dataset/full_data/negTrain.csv"
+neutralFile="../dataset/full_data/neuTrain.csv"
+
 MODEL=null
 model_scaler=null
 model_normalizer=null
 
-
 # train the model
-def train_SVM_model(X,Y,knel,c): # relaxation parameter
-    clf=svm.SVC(kernel=knel, C=c) # linear, poly, rbf, sigmoid, precomputed , see doc
+def train_SVM_model(X,Y): # relaxation parameter
+    clf=svm.SVC(kernel='rbf', C=0.1,class_weight={2.0: 2.4 ,-2.0: 3.3 }, gamma=0.01) # linear, poly, rbf, sigmoid, precomputed , see doc
     clf.fit(X,Y)
     return clf
 
@@ -29,35 +23,43 @@ def svm_Model():
     X_model, Y_model = generateVector.loadMatrix(positiveFile, neutralFile, negativeFile, '2', '0', '-2')
 
     # features standardization
-    X_model_scaled = pr.scale(np.array(X_model))
+    X_model_scaled = pr.scale(X_model)
     model_scaler = pr.StandardScaler().fit(X_model)  # to use later for testing data scaler.transform(X)
 
     # features Normalization
     X_model_normalized = pr.normalize(X_model_scaled, norm='l2')  # l2 norm
-    model_normalizer = pr.Normalizer().fit(X_model_scaled)  # as before normalizer.transform([[-1.,  1., 0.]]) for test
+    model_normalizer = pr.Normalizer().fit(X_model_scaled)  # as before normalizer.transform([[-1.,  1., 0.]]) for test.txt
 
     X_model = X_model_normalized
     X_model = X_model.tolist()
 
-
-    X, Y= generateVector.loadMatrix(positiveTuneFile, neutralTuneFile, negativeTuneFile, '2', '0', '-2')
+    #X, Y= generateVector.loadMatrix(positiveTuneFile, neutralTuneFile, negativeTuneFile, '2', '0', '-2')
 
     # features standardization
-    X_scaled = pr.scale(np.array(X))
+    #X_scaled = pr.scale(np.array(X))
 
     # features Normalization
-    X_normalized = pr.normalize(X_scaled, norm='l2')  # l2 norm
+    #X_normalized = pr.normalize(X_scaled, norm='l2')  # l2 norm
 
-    X= X_normalized
-    X = X.tolist()
-    KERNEL_FUNCTION, C_PARAMETER = tune.get_Kernel_Cparameter(X, Y)
-    print "Training model with optimized parameters"
-    MODEL = train_SVM_model(X_model, Y_model,KERNEL_FUNCTION, C_PARAMETER)
-    print "Training done !"
-    return MODEL
+    #X= X_normalized
+    #X = X.tolist()
+    #KERNEL_FUNCTION, C_PARAMETER = tune.get_Kernel_Cparameter(X_model, Y_model)
+    # print "Training model with optimized parameters"
+    # KERNEL_FUNCTIONS = ["linear", 'rbf']
+    # C = [ 0.01, 0.05, 0.1, 0.5, 1.0]
+    # for knel in KERNEL_FUNCTIONS:
+    #     for c in C:
+    #         print knel + " *** "+ str(c)
+    #         MODEL = train_SVM_model(X_model, Y_model,knel, c)
+    #         test.txt(MODEL)
+    #         print knel + str(c)
+    # print "Training done !"
+    # return MODEL
+    MODEL = train_SVM_model(X_model, Y_model,)
+    test(MODEL)
 
 #predict a tweet using the model
-def predict(tweet,model): # test a tweet against a built model
+def predict(tweet,model): # test.txt a tweet against a built model
     global model_scaler, model_normalizer
     z = generateVector.mapTweet(tweet)  # mapping
     z_scaled = model_scaler.transform(z)
@@ -66,8 +68,8 @@ def predict(tweet,model): # test a tweet against a built model
     prediction = model.predict([z]).tolist()[0]
     return  prediction # transform nympy array to list
 
-# write labelled  test dataset
-def writeTest(filename,model): # function to load test file in the csv format : sentiment,tweet
+# write labelled  test.txt dataset
+def writeTest(filename,model): # function to load test.txt file in the csv format : sentiment,tweet
     f = open(filename, "r")
     reader = csv.reader(f)
     fo=open(filename+".svm_result","w")
@@ -79,10 +81,10 @@ def writeTest(filename,model): # function to load test file in the csv format : 
         fo.write(r'"'+str(s)+r'","'+tweet+r'","'+str(nl)+r'"'+"\n")
     f.close()
     fo.close()
-    print "labelled test dataset is stores in : "+str(filename)+".svm_result"
+    print "labelled testdataset is stores in : "+str(filename)+".svm_result"
 
 def test(model):
-    print "Loading test data..."
+    print "Loading test.txt data..."
     writeTest('../dataset/test.csv', model)
     getAccuracyPrecision()
 
@@ -153,10 +155,9 @@ def getAccuracyPrecision():
     except:
         TypeError
 
+svm_Model()
 
-
-
-#svm_Model()
-print predict("Im a bad ", svm_Model())
-test(MODEL)
-
+# acc,precision_pos,precision_neg,precision_neu,recall_pos,recall_neg,recall_neu
+# 0.51326929339 0.413522012579 0.529331976941 0.557108042242 0.553684210526 0.393001007049 0.577564426478
+# F_core_pos,F_core_neg,F_core_neu
+# 0.473447344734 0.45109088282 0.567151835925

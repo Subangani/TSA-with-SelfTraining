@@ -1,5 +1,5 @@
 from __future__ import division
-import re
+
 
 
 def loadWords(filename):

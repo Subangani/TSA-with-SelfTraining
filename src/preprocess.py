@@ -130,28 +130,20 @@ def process(filename, processedFile):
     f1.close()
 
 #pre-processing positive twits
-positiveFilename= "../dataset/posTrain.csv"
+positiveFilename= "../dataset/full_data/posTrain.csv"
 positiveProcessedfile="../dataset/positiveProcessed.txt"
 print "preprocessing positive tweets"
-time1=time.time()
-process(positiveFilename,positiveProcessedfile)
-time2=time.time()
-#print 'Time for preprocessing positive tweets:',time2-time1
+#process(positiveFilename,positiveProcessedfile)
 
 #pre-processing positive twits
-negativeFilename= "../dataset/negTrain.csv"
+negativeFilename= "../dataset/full_data/negTrain.csv"
 negativeProcessedfile="../dataset/negativeProcessed.txt"
 print "preprocessing negative tweets"
-time1=time.time()
-process(negativeFilename,negativeProcessedfile)
-time2=time.time()
-#print 'Time for preprocessing negtive tweets:',time2-time1
+#process(negativeFilename,negativeProcessedfile)
 
 #pre-processing positive twits
-neutralFilename= "../dataset/neuTrain.csv"
+neutralFilename= "../dataset/full_data/neuTrain.csv"
 neutralProcessedfile="../dataset/neutralProcessed.txt"
 print "preprocessing neutral tweets"
-time1=time.time()
-process(neutralFilename,neutralProcessedfile)
-time2=time.time()
-#print 'Time for preprocessing neutral tweets:',time2-time1
+#process(neutralFilename,neutralProcessedfile)
+

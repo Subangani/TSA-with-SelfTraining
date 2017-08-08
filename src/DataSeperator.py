@@ -5,31 +5,33 @@ def seperate():
     neg="../dataset/full_data/negative.csv"
     neu="../dataset/full_data/neutral.csv"
 
-    posTrain = "../dataset/posTrain.csv"
-    negTrain = "../dataset/negTrain.csv"
-    neuTrain = "../dataset/neuTrain.csv"
+    posTrain = "../dataset/full_data/posTrain.csv"
+    negTrain = "../dataset/full_data/negTrain.csv"
+    neuTrain = "../dataset/full_data/neuTrain.csv"
 
-    posSelf = "../dataset/posSelf.csv"
-    negSelf = "../dataset/negSelf.csv"
-    neuSelf = "../dataset/neuSelf.csv"
+    posTune = "../dataset/full_data/posTune.csv"
+    negTune = "../dataset/full_data/negTune.csv"
+    neuTune = "../dataset/full_data/neuTune.csv"
 
     f0=open(pos,'r')
     f1=open(neg,'r')
     f2=open(neu,'r')
 
-    #f3=open(posTrain,"w")
+    f3=open(posTrain,"w")
     #f4=open(negTrain,"w")
-    f5=open(neuTrain,"w")
+    #f5=open(neuTrain,"w")
 
-    #f6=open(posSelf,"w")
-    #f7=open(negSelf,"w")
-    f8=open(neuSelf,"w")
-    reader = csv.reader(f2)
+    f6=open(posTune,"w")
+    #f7=open(negTune,"w")
+    #f8=open(neuTune,"w")
+    line=f0.readline()
     x0 = 0
-    for row in reader:
+    while line:
         x0+=1
-        if(x0%2):
-            f5.write(str(row)+"\n")
+        if(x0%3==1 or x0%3==2):
+            f3.write(str(line))
         else:
-            f8.write(str(row)+"\n")
+            f6.write(str(line))
+        line=f0.readline()
 seperate()
+
