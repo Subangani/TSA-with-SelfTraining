@@ -16,6 +16,6 @@ parameters = {'kernel':['linear', 'rbf'], 'C':[0.01,0.05,0.1,0.5,1.0,1.5,2.0,2.5
               [0.01,0.02,0.03,0.04]}
 svr = svm.SVC(class_weight={2.0: 2.4 ,-2.0: 3.3 })
 svr.fit(X_model,Y_model)
-grid = GridSearchCV(svr, parameters,scoring='f1_weighted', cv=5, n_jobs=-1)
+grid = GridSearchCV(svr, parameters,scoring='f1_micro', cv=5, n_jobs=-1)
 tunesModel=grid.fit(X_tune, Y_tune)
 print tunesModel.grid_scores_, tunesModel.best_params_,tunesModel.best_score_

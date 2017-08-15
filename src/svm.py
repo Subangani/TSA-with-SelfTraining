@@ -14,7 +14,7 @@ model_normalizer=null
 
 # train the model
 def train_SVM_model(X,Y): # relaxation parameter
-    clf=svm.SVC(kernel='rbf', C=0.1,class_weight={2.0: 2.4 ,-2.0: 3.3 }, gamma=0.01) # linear, poly, rbf, sigmoid, precomputed , see doc
+    clf=svm.SVC(kernel='rbf', C=1.0,class_weight={2.0: 2.4 ,-2.0: 3.3 }, gamma=0.01) # linear, poly, rbf, sigmoid, precomputed , see doc
     clf.fit(X,Y)
     return clf
 
@@ -158,6 +158,7 @@ def getAccuracyPrecision():
 svm_Model()
 
 # acc,precision_pos,precision_neg,precision_neu,recall_pos,recall_neg,recall_neu
-# 0.51326929339 0.413522012579 0.529331976941 0.557108042242 0.553684210526 0.393001007049 0.577564426478
+# 0.514083360469 0.41407736208 0.530328702135 0.557371743 0.549894736842 0.394008056395 0.580090955028
 # F_core_pos,F_core_neg,F_core_neu
-# 0.473447344734 0.45109088282 0.567151835925
+# 0.472418158799 0.452116134624 0.568504456916
+
