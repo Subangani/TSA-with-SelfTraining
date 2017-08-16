@@ -66,7 +66,6 @@ def ngram(file,gram,NC,CH):
                 postags=postag.pos_tag_string(line[0]).split()
                 postag_dict=dict(postags,gram,0,0)
                 postag_freq_list,is_success=dictUpdate(postag_freq_list,postag_dict)
-
                 chara_dict=dict(line[0],gram,NC,CH)
                 characterList,is_success=dictUpdate(characterList,chara_dict)
             except IndexError:
@@ -115,23 +114,29 @@ def score(tweet,p,n,ne,ngram):
             neu += neuCount / totalCount
     return [pos,neg,neu]
 
-def dictUpdate(original,temp):
+
+def dictUpdate(original, temp):
     """
     This will update original dictionary key, and values by comparing with temp values
     :param original:
     :param temp:
     :return: original updated dictionary and a success statement
     """
-    is_success=False
+    is_success = False
+    result = {}
     for key in temp.keys():
-        global_key_value=original.get(key)
-        local_key_value=temp.get(key)
-        if(global_key_value is None):
-            original.update({key:local_key_value})
+        global_key_value = original.get(key)
+        local_key_value = temp.get(key)
+        if key not in original.keys():
+            result.update({key:local_key_value})
         else:
-            original.update({key:local_key_value+global_key_value})
-    is_success=True
-    return original,is_success
+            result.update({key: local_key_value + global_key_value})
+    for key in original.keys():
+        if key not in temp.keys():
+            result.update({key:original.get(key)})
+    is_success = True
+    return result,is_success
+
 
 def characterNgram(tweet,gram):
     for word in tweet:
