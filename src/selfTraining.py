@@ -1,5 +1,6 @@
 from docutils.nodes import classifier
-
+import time
+import general as gen
 import generateVector
 
 positiveProcessedfile="../dataset/positiveProcessed.txt"
@@ -34,5 +35,9 @@ def selfTraining():
 
     print "added"
 
-
+timelist = []
+timelist.append(time.time())
+selfTraining()
+timelist.append(time.time())
+print "Time taken to process is " + gen.temp_difference_cal(timelist)
 #selfTraining()

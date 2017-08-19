@@ -1,8 +1,7 @@
 import postag
 import csv
+import general as gen
 from nltk.stem.snowball import SnowballStemmer
-
-
 def dict(words,gram,NC,CH):
     """
     This is to obtain the dict of word of particular line
@@ -61,12 +60,12 @@ def ngram(file,gram,NC,CH):
             try:
                 words = line[0].split()
                 word_dict = dict(words, gram,NC,CH)
-                freq_list,is_success=dictUpdate(freq_list,word_dict)
+                freq_list,is_success=gen.dict_update(freq_list, word_dict)
                 postags=postag.pos_tag_string(line[0]).split()
                 postag_dict=dict(postags,gram,0,0)
-                postag_freq_list,is_success=dictUpdate(postag_freq_list,postag_dict)
+                postag_freq_list,is_success=gen.dict_update(postag_freq_list, postag_dict)
                 # chara_dict=dict(line[0],gram,NC,CH)
-                # characterList,is_success=dictUpdate(characterList,chara_dict)
+                # characterList,is_success=gen.dict_update(characterList,chara_dict)
             except IndexError:
                 print "Error"
     return freq_list,postag_freq_list
@@ -111,29 +110,6 @@ def score(tweet,p,n,ne,ngram):
             neg += negCount / totalCount
             neu += neuCount / totalCount
     return [pos,neg,neu]
-
-
-def dictUpdate(original, temp):
-    """
-    This will update original dictionary key, and values by comparing with temp values
-    :param original:
-    :param temp:
-    :return: original updated dictionary and a success statement
-    """
-    is_success = False
-    result = {}
-    for key in temp.keys():
-        global_key_value = original.get(key)
-        local_key_value = temp.get(key)
-        if key not in original.keys():
-            result.update({key:local_key_value})
-        else:
-            result.update({key: local_key_value + global_key_value})
-    for key in original.keys():
-        if key not in temp.keys():
-            result.update({key:original.get(key)})
-    is_success = True
-    return result,is_success
 
 
 def characterNgram(tweet,gram):

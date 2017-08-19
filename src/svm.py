@@ -1,6 +1,8 @@
 from docutils.parsers import null
 import generateVector
 import csv
+import time
+import general as gen
 from sklearn import preprocessing as pr
 from sklearn import svm
 
@@ -86,76 +88,14 @@ def writeTest(filename,model): # function to load test.txt file in the csv forma
 def test(model):
     print "Loading test.txt data..."
     writeTest('../dataset/test.csv', model)
-    getAccuracyPrecision()
+    gen.get_scores()
 
-def getAccuracyPrecision():
-    try:
-        testedFile="../dataset/test.csv.svm_result"
-        f0=open(testedFile,"r")
-        line = f0.readline() #pass first line
-        TP=0
-        TN=0
-        TNeu=0
-        FP=0
-        FN=0
-        FNeu=0
-        NeuTr=0
-        NegTr=0
-        TrNeg=0
-        NeuNeg=0
-        TrNeu=0
-        NegNeu=0
 
-        readers = csv.reader(f0)
-        for tweetResult in readers:
-            if ((tweetResult[0]=="positive") & (str(tweetResult[2])=="2.0")):
-                TP+=1
-            elif ((tweetResult[0]=="negative") & (tweetResult[2]=="-2.0")):
-                TN+=1
-            elif ((tweetResult[0]=="neutral") & (tweetResult[2]=="0.0")):
-                TNeu+=1
-            elif (((tweetResult[0]=="negative") | (tweetResult[0]=="neutral")) & (tweetResult[2]=="2.0")):
-                FP+=1
-            elif (((tweetResult[0]=="positive")| (tweetResult[0]=="neutral")) & (tweetResult[2]=="-2.0")):
-                FN+=1
-            elif (((tweetResult[0]=="positive")| (tweetResult[0]=="negative")) & (tweetResult[2]=="0.0")):
-                FNeu+=1
-
-            if ((tweetResult[0]=="positive") & (tweetResult[2]=="0.0")):
-                NeuTr+=1
-            elif ((tweetResult[0]=="positive") & (tweetResult[2]=="-2.0")):
-                NegTr+=1
-            elif ((tweetResult[0]=="negative") & (tweetResult[2]=="0.0")):
-                NeuNeg+=1
-            elif ((tweetResult[0]=="negative") & (tweetResult[2]=="2.0")):
-                TrNeg+=1
-            elif ((tweetResult[0]=="neutral") & (tweetResult[2]=="2.0")):
-                TrNeu+=1
-            elif ((tweetResult[0]=="neutral") & (tweetResult[2]=="-2.0")):
-                NegNeu+=1
-        print "TP,TN,TNeu,FP,FN,FNeu,NeuTr,NegTr,NeuNeg,TrNeg,TrNeu,NegNeu"
-        print TP,TN,TNeu,FP,FN,FNeu,NeuTr,NegTr,NeuNeg,TrNeg,TrNeu,NegNeu
-        acc=(TP+TN+TNeu)/((TP+TN+TNeu+FP+FN+FNeu)*1.0)
-        precision_pos=(TP/((FP+TP)*1.0))
-        precision_neg=(TN/((FN+TN)*1.0))
-        precision_neu=(TNeu/((FNeu+TNeu)*1.0))
-
-        recall_pos=TP/((TP+NegTr+NeuTr)*1.0)
-        recall_neg=TN/((TN+TrNeg+NeuNeg)*1.0)
-        recall_neu=TNeu/((TNeu+TrNeu+NegNeu)*1.0)
-
-        F_core_pos=2*(precision_pos*recall_pos)/(precision_pos+recall_pos)
-        F_core_neg=2*(precision_neg*recall_neg)/(precision_neg+recall_neg)
-        F_core_neu=2*(precision_neu*recall_neu)/(precision_neu+recall_neu)
-
-        print "acc,precision_pos,precision_neg,precision_neu,recall_pos,recall_neg,recall_neu"
-        print acc,precision_pos,precision_neg,precision_neu,recall_pos,recall_neg,recall_neu
-        print "F_core_pos,F_core_neg,F_core_neu"
-        print F_core_pos,F_core_neg,F_core_neu
-    except:
-        TypeError
-
+timelist=[]
+timelist.append(time.time())
 svm_Model()
+timelist.append(time.time())
+print "Time taken to process is " + gen.temp_difference_cal(timelist)
 
 # acc,precision_pos,precision_neg,precision_neu,recall_pos,recall_neg,recall_neu
 # 0.514083360469 0.41407736208 0.530328702135 0.557371743 0.549894736842 0.394008056395 0.580090955028
