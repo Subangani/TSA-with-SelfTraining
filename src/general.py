@@ -10,14 +10,15 @@ def dict_update(original, temp):
     """
     is_success = False
     result = {}
+    original_temp = original.copy()
     for key in temp.keys():
-        global_key_value = original.get(key)
+        global_key_value = original_temp.get(key)
         local_key_value = temp.get(key)
-        if key not in original.keys():
+        if key not in original_temp.keys():
             result.update({key:local_key_value})
         else:
             result.update({key: local_key_value + global_key_value})
-    original_temp = original.copy()
+            del original_temp[key]
     result.update(original_temp)
     return result,is_success
 

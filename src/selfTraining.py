@@ -39,5 +39,4 @@ timelist = []
 timelist.append(time.time())
 selfTraining()
 timelist.append(time.time())
-print "Time taken to process is " + gen.temp_difference_cal(timelist)
-#selfTraining()
+print "Time taken to process is " + str(gen.temp_difference_cal(timelist))

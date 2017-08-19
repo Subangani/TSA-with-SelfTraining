@@ -95,10 +95,9 @@ timelist=[]
 timelist.append(time.time())
 svm_Model()
 timelist.append(time.time())
-print "Time taken to process is " + gen.temp_difference_cal(timelist)
+print "Time taken to process is " + str(gen.temp_difference_cal(timelist))
 
 # acc,precision_pos,precision_neg,precision_neu,recall_pos,recall_neg,recall_neu
 # 0.514083360469 0.41407736208 0.530328702135 0.557371743 0.549894736842 0.394008056395 0.580090955028
 # F_core_pos,F_core_neg,F_core_neu
 # 0.472418158799 0.452116134624 0.568504456916
-
