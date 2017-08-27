@@ -1,169 +1,179 @@
-
 import numpy as np
 import xgboost as xgb
-from sklearn.grid_search import GridSearchCV   #Perforing grid search
+from sklearn.grid_search import GridSearchCV   #Performing grid search
 import generateVector
-from xgboost import XGBClassifier
+from sklearn.model_selection import GroupKFold
+from sklearn import preprocessing as pr
 
-positiveFile="../dataset/full_data/posTrain.csv"
-negativeFile="../dataset/full_data/negTrain.csv"
-neutralFile="../dataset/full_data/neuTrain.csv"
-positiveTuneFile="../dataset/full_data/posTune.csv"
-negativeTuneFile="../dataset/full_data/negTune.csv"
-neutralTuneFile="../dataset/full_data/neuTune.csv"
+positiveFile="../dataset/full_data/positive.csv"
+negativeFile="../dataset/full_data/negative.csv"
+neutralFile="../dataset/full_data/neutral.csv"
 
 X_model, Y_model = generateVector.loadMatrix(positiveFile, neutralFile, negativeFile, '2', '0', '-2')
-X_tune, Y_tune=generateVector.loadMatrix(positiveTuneFile, neutralTuneFile, negativeTuneFile, '2', '0', '-2')
+X_model_scaled = pr.scale(X_model)
+X_model_normalized = pr.normalize(X_model_scaled, norm='l2')  # l2 norm
+X_model = X_model_normalized
+X_model = X_model.tolist()
+
+testFold = []
+for i in range(1, len(X_model) + 1):
+    if (i % 3 == 1) | (i % 3 == 2):
+        testFold.append(0)
+    else:
+        testFold.append(2)
+#ps = PredefinedSplit(test_fold=testFold)
+gkf = list(GroupKFold(n_splits=2).split(X_model, Y_model, testFold))
 
 def param_Test1():
-    global X_model,Y_model,X_tune,Y_tune
-    cv_params = {'max_depth': [3,5,7,9], 'min_child_weight': [1,3,5]}
-    ind_params = {'learning_rate': 0.1, 'n_estimators': 50, 'seed':0, 'subsample': 0.8, 'colsample_bytree': 0.8,
-                'objective': 'multi:softmax','silent':0}
-    optimized_GBM = GridSearchCV(XGBClassifier(**ind_params).fit(np.asarray(X_model),Y_model),param_grid=cv_params,scoring = 'accuracy', cv = 5, n_jobs = -1)
-    # Optimize for accuracy since that is the metric used in the Adult Data Set notation
+    global X_model,Y_model,gkf
+    param_grid = {
+        'max_depth': [2,4,6,8,10],
+        'min_child_weight':[1,3,5,7],
+        # 'gamma':[i/10.0 for i in range(0,5)],
+        # 'subsample': [i / 10.0 for i in range(6, 10)],
+        # 'colsample_bytree': [i / 10.0 for i in range(6, 10)],
+        # 'reg_alpha': [1e-5, 1e-2, 0.1, 1, 100],
+        'n_estimators': [100]}
+    xgbclf = xgb.XGBClassifier(silent=0,objective="multi:softmax",learning_rate=0.1)
 
-    tunedModel=optimized_GBM.fit(np.asarray(X_tune), Y_tune)
-    print tunedModel
-    print tunedModel.grid_scores_,tunedModel.best_params_,tunedModel.best_score_
+    # Run Grid Search process
+    gs_clf = GridSearchCV(xgbclf, param_grid,n_jobs=-1,scoring='f1_weighted',cv=gkf)
+    gs_clf.fit(np.asarray(X_model), Y_model)
+    print gs_clf.best_params_,gs_clf.best_score_
+    print gs_clf.grid_scores_, gs_clf.best_params_, gs_clf.best_score_
+    best_parameters, score, _ = max(gs_clf.grid_scores_, key=lambda x: x[1])
+    print('score:', score)
+    for param_name in sorted(best_parameters.keys()):
+        print('%s: %r' % (param_name, best_parameters[param_name]))
 
-param_Test1()
+#param_Test1()
 
-# def param_test2():
-#
-#     cv_params = {'max_depth':range(3, 10, 2),
-#                  'min_child_weight':range(1, 6, 2)}
-#     ind_params = {'learning_rate': 0.1, 'n_estimators': 140, 'seed': 0, 'subsample': 0.8, 'colsample_bytree': 0.8,
-#                   'objective': 'multi:softmax', 'silent': 0}
-#     optimized_GBM = GridSearchCV(xgb.XGBClassifier(**ind_params),
-#                                  cv_params,
-#                                  scoring='accuracy', cv=5, n_jobs=-1)
-#     # Optimize for accuracy since that is the metric used in the Adult Data Set notation
-#
-#     optimized_GBM.fit(np.asarray(X_model), Y_model)
-#     print optimized_GBM.grid_scores_
+#{'n_estimators': 100, 'max_depth': 4, 'min_child_weight': 3} 0.767260190997
 
+def param_test2():
+    global X_model, Y_model, gkf
+    param_grid = {
+        'max_depth': [5,6,7],
+        'min_child_weight':[2,3,4],
+        # 'gamma':[i/10.0 for i in range(0,5)],
+        # 'subsample': [i / 10.0 for i in range(6, 10)],
+        # 'colsample_bytree': [i / 10.0 for i in range(6, 10)],
+        # 'reg_alpha': [1e-5, 1e-2, 0.1, 1, 100],
+        'n_estimators': [100]}
+    xgbclf = xgb.XGBClassifier(silent=0,objective="multi:softmax")
+    # Run Grid Search process
 
-# param_test2 = {
-#  'max_depth':[4,5,6],
-#  'min_child_weight':[4,5,6]
-# }
-# gsearch2 = GridSearchCV(estimator = XGBClassifier( silent=0,learning_rate=0.1,
-#                         n_estimators=140, subsample=0.8, colsample_bytree=0.8,
-#                         objective= 'multi:softmax', nthread=4,seed=0),
-#                 param_grid = param_test2, scoring='accuracy',n_jobs=-1, cv=5)
-# gsearch2.fit(np.asarray(X_model), Y_model)
-# print gsearch2.grid_scores_, gsearch2.best_params_, gsearch2.best_score_
+    gs_clf = GridSearchCV(xgbclf, param_grid,
+                          n_jobs=1,
+                          scoring='f1_weighted',cv=gkf)
+    gs_clf.fit(np.asarray(X_model), Y_model)
+    print gs_clf.grid_scores_, gs_clf.best_params_, gs_clf.best_score_
+    best_parameters, score, _ = max(gs_clf.grid_scores_, key=lambda x: x[1])
+    print('score:', score)
+    for param_name in sorted(best_parameters.keys()):
+        print('%s: %r' % (param_name, best_parameters[param_name]))
+
+#param_test2()
 
 def paramTest2a():
-    cv_params = {'max_depth': [2,3,4], 'min_child_weight': [4,5,6]}
-    ind_params = {'learning_rate': 0.1, 'n_estimators': 140, 'seed':0, 'subsample': 0.8, 'colsample_bytree': 0.8,
-                     'objective': 'multi:softmax','silent':0}
-    optimized_GBM = GridSearchCV(xgb.XGBClassifier(**ind_params),
-                                    cv_params,
-                                     scoring = 'accuracy', cv = 5, n_jobs = -1)
-    # Optimize for accuracy since that is the metric used in the Adult Data Set notation
+    global X_model, Y_model, gkf
+    param_grid = {
+        #'max_depth': [5, 6, 7],
+        #'learning_rate': [0.1, 0.15, 0.2, 0.3],
+        #'min_child_weight':[1,3,5,7],
+        # 'gamma':[i/10.0 for i in range(0,5)],
+         'subsample': [i / 10.0 for i in range(6, 10)],
+         'colsample_bytree': [i / 10.0 for i in range(6, 10)],
+        # 'reg_alpha': [1e-5, 1e-2, 0.1, 1, 100],
+        'n_estimators': [100]}
+    xgbclf = xgb.XGBClassifier(max_depth=5,min_child_weight=2,silent=0,learning_rate=0.1,objective="multi:softmax")
+    gs_clf = GridSearchCV(xgbclf, param_grid,
+                          n_jobs=1,
+                          scoring='f1_weighted',cv=gkf)
+    gs_clf.fit(np.asarray(X_model), Y_model)
+    print gs_clf.grid_scores_, gs_clf.best_params_, gs_clf.best_score_
+    best_parameters, score, _ = max(gs_clf.grid_scores_, key=lambda x: x[1])
+    print('score:', score)
+    for param_name in sorted(best_parameters.keys()):
+        print('%s: %r' % (param_name, best_parameters[param_name]))
 
-    optimized_GBM.fit(np.asarray(X_model), Y_model)
-    print optimized_GBM.grid_scores_,optimized_GBM.best_params_,optimized_GBM.best_score_
+#paramTest2a()
 
 def paramTest2b():
-    cv_params = { 'min_child_weight': [5,6,7]}
-    ind_params = {'learning_rate': 0.1,'max_depth':3, 'n_estimators': 140, 'seed':0, 'subsample': 0.8, 'colsample_bytree': 0.8,
-                     'objective': 'multi:softmax','silent':0}
-    optimized_GBM = GridSearchCV(xgb.XGBClassifier(**ind_params),
-                                    cv_params,
-                                     scoring = 'accuracy', cv = 5, n_jobs = -1)
-    # Optimize for accuracy since that is the metric used in the Adult Data Set notation
+    global X_model, Y_model, gkf
+    param_grid = {
+        #'max_depth': [5, 6, 7],
+        # 'learning_rate': [0.1, 0.15, 0.2, 0.3],
+        #'min_child_weight': [1, 3, 5, 7],
+         #'gamma':[i/10.0 for i in range(0,5)],
+         'subsample': [i / 10.0 for i in range(6, 10)],
+         'colsample_bytree': [i / 10.0 for i in range(6, 10)],
+        # 'reg_alpha': [1e-5, 1e-2, 0.1, 1, 100],
+        'n_estimators': [100]}
+    xgbclf = xgb.XGBClassifier(silent=0, objective="multi:softmax",learning_rate=0.1,max_depth=7,min_child_weight=7)
+    # Run Grid Search process
+    gs_clf = GridSearchCV(xgbclf, param_grid,
+                          n_jobs=1,
+                          scoring='f1_weighted',cv=gkf)
+    gs_clf.fit(np.asarray(X_model), Y_model)
+    print gs_clf.grid_scores_, gs_clf.best_params_, gs_clf.best_score_
+    best_parameters, score, _ = max(gs_clf.grid_scores_, key=lambda x: x[1])
+    print('score:', score)
+    for param_name in sorted(best_parameters.keys()):
+        print('%s: %r' % (param_name, best_parameters[param_name]))
 
-    optimized_GBM.fit(np.asarray(X_model), Y_model)
-    print optimized_GBM.grid_scores_,optimized_GBM.best_params_,optimized_GBM.best_score_
-
-
+#paramTest2b()
 
 def paramTest3():
-    cv_params = { 'gamma':[i/10.0 for i in range(0,5)]}
-    ind_params = {'learning_rate': 0.1,'max_depth':3,'min_child_weight':6, 'n_estimators': 140, 'seed':0, 'subsample': 0.8, 'colsample_bytree': 0.8,
-                     'objective': 'multi:softmax','silent':0}
-    optimized_GBM = GridSearchCV(xgb.XGBClassifier(**ind_params),
-                                    cv_params,
-                                     scoring = 'accuracy', cv = 5, n_jobs = -1)
-    # Optimize for accuracy since that is the metric used in the Adult Data Set notation
+    global X_model, Y_model, gkf
+    param_grid = {
+        # 'max_depth': [5, 6, 7],
+        # 'learning_rate': [0.1, 0.15, 0.2, 0.3],
+        # 'min_child_weight': [1, 3, 5, 7],
+         'gamma':[i/10.0 for i in range(0,5)],
+        #'subsample': [i / 10.0 for i in range(6, 10)],
+        #'colsample_bytree': [i / 10.0 for i in range(6, 10)],
+        # 'reg_alpha': [1e-5, 1e-2, 0.1, 1, 100],
+        'n_estimators': [100]}
+    xgbclf = xgb.XGBClassifier(silent=0,objective="multi:softmax", learning_rate=0.1, max_depth=7, min_child_weight=7,
+                               colsample_bytree=0.9,subsample=0.9)
+    # Run Grid Search process
+    gs_clf = GridSearchCV(xgbclf, param_grid,
+                          n_jobs=1,
+                          scoring='f1_weighted',cv=gkf)
+    gs_clf.fit(np.asarray(X_model), Y_model)
+    print gs_clf.grid_scores_, gs_clf.best_params_, gs_clf.best_score_
+    best_parameters, score, _ = max(gs_clf.grid_scores_, key=lambda x: x[1])
+    print('score:', score)
+    for param_name in sorted(best_parameters.keys()):
+        print('%s: %r' % (param_name, best_parameters[param_name]))
 
-    optimized_GBM.fit(np.asarray(X_model), Y_model)
-    print optimized_GBM.grid_scores_,optimized_GBM.best_params_,optimized_GBM.best_score_
-
-
+#paramTest3()
 
 def paramTest4a():
-    cv_params = { 'subsample':[i/10.0 for i in range(6,10)],
- 'colsample_bytree':[i/10.0 for i in range(6,10)]}
-    ind_params = {'learning_rate': 0.1,'max_depth':3,'min_child_weight':6, 'n_estimators': 140, 'seed':0, 'subsample': 0.8, 'colsample_bytree': 0.8,
-                     'objective': 'multi:softmax','silent':0,'gamma':0}
-    optimized_GBM = GridSearchCV(xgb.XGBClassifier(**ind_params),
-                                    cv_params,
-                                     scoring = 'accuracy', cv = 5, n_jobs = -1)
-    # Optimize for accuracy since that is the metric used in the Adult Data Set notation
+    global X_model, Y_model,gkf
+    param_grid = {
+        # 'max_depth': [5, 6, 7],
+        # 'learning_rate': [0.1, 0.15, 0.2, 0.3],
+        # 'min_child_weight': [1, 3, 5, 7],
+        # 'gamma': [i / 10.0 for i in range(0, 5)],
+        # 'subsample': [i / 10.0 for i in range(6, 10)],
+        # 'colsample_bytree': [i / 10.0 for i in range(6, 10)],
+         'reg_alpha': [1e-5, 1e-2, 0.1, 1, 100],
+        'n_estimators': [100]}
+    xgbclf = xgb.XGBClassifier(silent=0, learning_rate=0.1, max_depth=7, min_child_weight=7,gamma=0.1,
+                               colsample_bytree=0.8, subsample=0.6,objective="multi:softmax")
+    # Run Grid Search process
+    gs_clf = GridSearchCV(xgbclf, param_grid,
+                          n_jobs=1,
+                          scoring='f1_weighted',cv=gkf)
+    gs_clf.fit(np.asarray(X_model), Y_model)
+    print gs_clf.grid_scores_, gs_clf.best_params_, gs_clf.best_score_
+    best_parameters, score, _ = max(gs_clf.grid_scores_, key=lambda x: x[1])
+    print('score:', score)
+    for param_name in sorted(best_parameters.keys()):
+        print('%s: %r' % (param_name, best_parameters[param_name]))
 
-    optimized_GBM.fit(np.asarray(X_model), Y_model)
-    print optimized_GBM.grid_scores_,optimized_GBM.best_params_,optimized_GBM.best_score_
-
-def paramTest4b():
-    cv_params = {'subsample':[i / 100.0 for i in range(60, 80, 5)],
-    'colsample_bytree':[i / 100.0 for i in range(50, 70, 5)]}
-    ind_params = {'learning_rate': 0.1, 'max_depth': 3, 'min_child_weight': 6, 'n_estimators': 140, 'seed': 0,
-                  'objective': 'multi:softmax', 'silent': 0, 'gamma': 0}
-    optimized_GBM = GridSearchCV(xgb.XGBClassifier(**ind_params),
-                                 cv_params,
-                                 scoring='accuracy', cv=5, n_jobs=-1)
-    # Optimize for accuracy since that is the metric used in the Adult Data Set notation
-
-    optimized_GBM.fit(np.asarray(X_model), Y_model)
-    print optimized_GBM.grid_scores_, optimized_GBM.best_params_, optimized_GBM.best_score_
-
-
-
-
-def paramTest5a():
-    cv_params = {'reg_alpha':[1e-5, 1e-2, 0.1, 1, 100]}
-    ind_params = {'learning_rate': 0.1, 'max_depth': 3, 'min_child_weight': 6, 'n_estimators':140, 'seed': 0,
-                  'subsample': 0.7, 'colsample_bytree': 0.6,
-                  'objective': 'multi:softmax', 'silent': 0, 'gamma': 0}
-    optimized_GBM = GridSearchCV(xgb.XGBClassifier(**ind_params),
-                                 cv_params,
-                                 scoring='accuracy', cv=5, n_jobs=-1)
-    # Optimize for accuracy since that is the metric used in the Adult Data Set notation
-
-    optimized_GBM.fit(np.asarray(X_model), Y_model)
-    print optimized_GBM.grid_scores_, optimized_GBM.best_params_, optimized_GBM.best_score_
-
-
-
-
-def paramTest5b():
-    cv_params = {'reg_alpha':[0.000005, 0.00001, 0.000015, 0.00002, 0.000025]}
-    ind_params = {'learning_rate': 0.1, 'max_depth': 3, 'min_child_weight': 6, 'n_estimators': 140, 'seed': 0,
-                  'subsample': 0.7, 'colsample_bytree': 0.6,
-                  'objective': 'multi:softmax', 'silent': 0, 'gamma': 0}
-    optimized_GBM = GridSearchCV(xgb.XGBClassifier(**ind_params),
-                                 cv_params,
-                                 scoring='accuracy', cv=5, n_jobs=-1)
-    # Optimize for accuracy since that is the metric used in the Adult Data Set notation
-
-    optimized_GBM.fit(np.asarray(X_model), Y_model)
-    print optimized_GBM.grid_scores_, optimized_GBM.best_params_, optimized_GBM.best_score_
-
-def paramTest6():
-    cv_params = {'n_estimators':[0,50,100,500]}
-    ind_params = {'learning_rate': 0.1, 'max_depth': 3, 'min_child_weight': 6,  'seed': 0,
-                  'subsample': 0.7, 'colsample_bytree': 0.6,'reg_alpha':1e-05,
-                  'objective': 'multi:softmax', 'silent': 0, 'gamma': 0}
-    optimized_GBM = GridSearchCV(xgb.XGBClassifier(**ind_params),
-                                 cv_params,
-                                 scoring='accuracy', cv=5, n_jobs=-1)
-    # Optimize for accuracy since that is the metric used in the Adult Data Set notation
-
-    optimized_GBM.fit(np.asarray(X_model), Y_model)
-    print optimized_GBM.grid_scores_, optimized_GBM.best_params_, optimized_GBM.best_score_
+paramTest4a()
 
 

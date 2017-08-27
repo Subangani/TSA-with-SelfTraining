@@ -17,9 +17,9 @@ positiveProcessedfile="../dataset/positiveProcessed.txt"
 negativeProcessedfile="../dataset/negativeProcessed.txt"
 neutralProcessedfile="../dataset/neutralProcessed.txt"
 
-positiveFile="../dataset/full_data/posTrain.csv"
-negativeFile="../dataset/full_data/negTrain.csv"
-neutralFile="../dataset/full_data/neuTrain.csv"
+positiveFile="../dataset/full_data/posTune.csv"
+negativeFile="../dataset/full_data/negTune.csv"
+neutralFile="../dataset/full_data/neuTune.csv"
 
 emoticon_file = "../resources/emoticon.txt"
 emoticon_dict = microbloggingFeature.create_emoticon_dictionary(emoticon_file)
